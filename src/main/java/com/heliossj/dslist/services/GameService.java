@@ -3,6 +3,7 @@ package com.heliossj.dslist.services;
 import com.heliossj.dslist.dto.GameDto;
 import com.heliossj.dslist.dto.GameMinDto;
 import com.heliossj.dslist.entities.Game;
+import com.heliossj.dslist.projections.GameMinProjection;
 import com.heliossj.dslist.repository.GameRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class GameService {
     public GameDto findById(Long id){
         Game result = gameRepository.findById(id).get();
         return new GameDto(result);
+    }
+
+    @Transactional
+    public List<GameMinDto> findByList(Long listId){
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
+        return result.stream().map(x -> new GameMinDto(x)).toList();
     }
 
 
